@@ -20,11 +20,39 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const spotsLeft = details.max_participants - details.participants.length;
 
+        // Participants badge
+        const participantsCount = details.participants.length;
+        const maxParticipants = details.max_participants;
+
+        // Build participants list HTML
+        let participantsHTML = "";
+        if (details.participants.length > 0) {
+          participantsHTML = `
+            <ol class="participants-list">
+              ${details.participants.map(email => `<li>${email}</li>`).join("")}
+            </ol>
+          `;
+        } else {
+          participantsHTML = `<div class="no-participants">No participants yet.</div>`;
+        }
+
+        // Place badge inside h4, floated right, showing registered/total
         activityCard.innerHTML = `
-          <h4>${name}</h4>
+          <div class="activity-header">
+            <h4>
+              ${name}
+              <span class="participants-badge" title="Registered participants">
+                ${participantsCount}/${maxParticipants}
+              </span>
+            </h4>
+          </div>
           <p>${details.description}</p>
           <p><strong>Schedule:</strong> ${details.schedule}</p>
           <p><strong>Availability:</strong> ${spotsLeft} spots left</p>
+          <div class="participants-section">
+            <strong>Participants:</strong>
+            ${participantsHTML}
+          </div>
         `;
 
         activitiesList.appendChild(activityCard);
